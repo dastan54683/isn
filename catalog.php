@@ -1,6 +1,9 @@
 <?php
 		session_start();
 		include_once "registr/db/dbconnection.php";
+		// unset($_SESSION['prod_id']);
+		$result = $db->query("SELECT * FROM catalog");
+		$catalog = $result->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +16,7 @@
     <title>Каталог</title>
     <link href="css/bootstrap-3.1.1.min.css" rel='stylesheet' type='text/css' />
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script language="javascript" type="text/javascript" src="functions.js"></script>
+<!-- <script language="javascript" type="text/javascript" src="functions.js"></script> -->
 <script language="javascript" type="text/javascript" src="js/jquery.min.js"></script>
 <!-- Custom Theme files -->
 <!--theme-style-->
@@ -23,8 +26,7 @@
 <link href='//fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
 <link href='//fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
 <!-- start menu -->
-<script src="js/bootstrap.min.js"></script>
-<script src="js/simpleCart.min.js"> </script>
+
 <!-- slide -->
 <script src="js/responsiveslides.min.js"></script>
   <!-- animation-effect -->
@@ -46,13 +48,13 @@
 				</div>
 			<div class="col-sm-4 world animated wow fadeInRight" data-wow-delay=".5s">
 					<div class="cart box_1">
-						<a href="checkout.php">
-						<h3> <div class="total">
-							<span class="simpleCart_total"></span></div>
-							<img src="images/cart.png" alt=""/></h3>
+						<a href="cart.php">
+							<h3> <div class="total">
+								<span id="cart_total"></span></div>
+								<img src="images/cart.png" alt=""/>
+							</h3>
 						</a>
-						<p><a href="javascript:;" class="simpleCart_empty">Очистить корзину</a></p>
-
+						<p><a href="#" id="clear">Очистить корзину</a></p>
 					</div>
 			</div>
 			<div class="col-sm-2 number animated wow fadeInRight" data-wow-delay=".5s">
@@ -146,8 +148,6 @@
 		<div class="col-md-9">
 			<div class="content-top1">
 			<?php 
-				$result = $db->query("SELECT * FROM `catalog`");
-				$catalog = $result->fetchAll();
 				foreach ($catalog as $good): 
 			?>
 			<div class="col-md-4 col-md4">
@@ -158,7 +158,7 @@
 						<h3><a href="good.php?id=<?= $good["id"] ?>"><?= $good["name"] ?></a></h3>
 						<div class="price">
                                 <h5 class="item_price">$<?= $good["cost"] ?></h5>
-								<a href="#" class="item_add">Добавить в корзину</a>
+								<div class="add_cart" data-id="<?= $good['id']?>">Добавить в корзину</div>
 								<div class="clearfix"> </div>
 						</div>
 					</div>
@@ -288,4 +288,8 @@
 	</div>
 </div>              
     </body>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/cart.js"></script>
+
             </html>
